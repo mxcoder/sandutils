@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>&#x1F349; Tools</title>
+    <link rel="stylesheet" href="https://unpkg.com/marx-css/css/marx.min.css">
+    <style>
+        details { border: 1px solid #aaa; border-radius: 4px; padding: .5em .5em 0; cursor: pointer; }
+        summary { font-weight: bold; margin: -.5em -.5em 0; padding: .5em; }
+        summary:hover { background-color: lightgreen; }
+        details[open] { padding: .5em; }
+        details[open] summary { border-bottom: 1px solid #aaa; margin-bottom: .5em; }
+        form label { width: calc(100% - 310px); ;}
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1>&#x1F349; Tools</h1>
+        <details open>
+            <summary>Site Survey Pivoter</summary>
+            <form action="/v1/pivot" method="POST" enctype="multipart/form-data">
+                <p>
+                    <label for="file_001">Site Survey (CSV)</label>
+                    <input type="file" id="file_001" name="file">
+                </p>
+                <p>
+                    <input type="submit" value="Download">
+                </p>
+            </form>
+        </details>
+        <details open>
+            <summary>Neighbours Matcher</summary>
+            <form action="/v1/neighbours" method="POST" enctype="multipart/form-data">
+                <p>
+                    <label for="file_002">GSM (CSV)</label>
+                    <input type="file" id="file_002" name="gsm">
+                </p>
+                <p>
+                    <label for="file_002">LTE (CSV)</label>
+                    <input type="file" id="file_003" name="lte">
+                </p>
+                <p>
+                    <label for="file_002">UMTS (CSV)</label>
+                    <input type="file" id="file_004" name="umts">
+                </p>
+                <p>
+                    <input type="submit" value="Download Neighbours (XLS)">
+                </p>
+            </form>
+        </details>
+    </main>
+</body>
+
+</html>

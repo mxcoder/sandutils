@@ -5,10 +5,16 @@ import numpy as np
 import pandas as pd
 
 
-def main(filename):
-    basefilename = path.splitext(path.basename(filename))[0]
+def main(file_or_data):
+    '''Pivots the given table using Site Survey columns
 
-    original_df = pd.read_csv(filename)
+    Arguments:
+    - file_or_data File-like data to be read by pandas.read_csv
+
+    Returns
+    - Pandas datafras
+    '''
+    original_df = pd.read_csv(file_or_data)
     final_df = pd.DataFrame()
 
     for sector in range(1, 4):
@@ -31,18 +37,22 @@ def main(filename):
             partial_df['ModelSize'] = partial_df['Model'].apply(lambda x: len(str(x)) > 30)
             final_df = final_df.append(partial_df)
 
-    # final_df.replace(('', ' '), np.nan, inplace=True)
     final_df['Model'].replace((0, '0', np.nan), 'NO DATA', inplace=True)
-    # final_df = final_df[final_df['Model'] == np.nan].fillna('NO DATA')
     final_df.loc[(final_df.Model == 'NO DATA'), ('Azimut', 'Height', 'Mec. Tilt', 'Elect. Tilt')] = 'NO DATA'
-
     final_df.replace('NO DATA', np.nan, inplace=True)
-    # final_df.sort_values(['Customer Site ID', 'Sector', 'Antena'], inplace=True)
     final_df.reset_index(drop=True, inplace=True)
-    # print(final_df)
-    final_df.to_csv(path.join(path.dirname(filename), f'{basefilename}_pivot.csv'), index=False)
 
-if __name__ == '__main__':
+    return final_df
+
+
+def writeBook(sheet, filename_or_stream):
+    # https://github.com/PyCQA/pylint/issues/3060 pylint: disable=abstract-class-instantiated
+    writer = pd.ExcelWriter(filename_or_stream, engine="xlwt")
+    sheet.to_excel(writer, index=False, encoding="UTF-8")
+    writer.save()
+
+
+if __name__ == "__main__":
     filename = sys.argv.pop() if len(sys.argv) == 2 else None
     if filename is None:
         print('Missing argument: filename\nUsage: main.py [filename.csv]')
